@@ -55,14 +55,46 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 my-12">
-            <ProductPreview title="Казковий ліс" price="450 грн/м²" />
-            <ProductPreview title="Міський пейзаж" price="520 грн/м²" />
-            <ProductPreview title="Гірський краєвид" price="480 грн/м²" />
-            <ProductPreview title="Тропічний сад" price="500 грн/м²" />
-            <ProductPreview title="Морський бриз" price="470 грн/м²" />
-            <ProductPreview title="Класичний орнамент" price="530 грн/м²" />
-            <ProductPreview title="Абстракція" price="490 грн/м²" />
-            <ProductPreview title="Квітковий сад" price="510 грн/м²" />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
           </div>
         </div>
       </div>

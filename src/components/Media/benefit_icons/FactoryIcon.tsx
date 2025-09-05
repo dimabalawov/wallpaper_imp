@@ -1,8 +1,6 @@
 import React from "react";
 
-import { BenefitIconProps } from "./FileIcon";
-
-const DeliveryIcon: React.FC<BenefitIconProps> = (props) => (
+const DeliveryIcon: React.FC = (props) => (
   <svg
     width="108"
     height="65"

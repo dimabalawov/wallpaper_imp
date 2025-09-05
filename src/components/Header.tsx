@@ -9,12 +9,7 @@ import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
 } from "@headlessui/react";
-import { useRouter } from "next/navigation";
 
 const iconProps = { width: 24, height: 24, fill: "#2F4156" };
 
@@ -39,7 +34,6 @@ const Header: React.FC = () => {
   const [openCategory, setOpenCategory] = React.useState<string | null>(
     navLinks[0].label
   );
-  const router = useRouter();
   return (
     <Disclosure as="nav" className="bg-white text-black w-full">
       <div className="w-full px-4 sm:px-8 lg:px-16 xl:px-32">

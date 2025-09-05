@@ -1,8 +1,6 @@
 import React from "react";
 
-export interface BenefitIconProps extends React.SVGProps<SVGSVGElement> {}
-
-const FileIcon: React.FC<BenefitIconProps> = (props) => (
+const FileIcon: React.FC = (props) => (
   <svg
     width="45"
     height="60"

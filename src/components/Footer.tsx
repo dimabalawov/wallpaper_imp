@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 
 const Footer: React.FC = () => (
   <footer className="bg-teal mt-14 py-14 px-[clamp(1rem,6vw,7.5rem)] text-white">
@@ -8,7 +9,14 @@ const Footer: React.FC = () => (
     >
       {/* Left: Logo and About */}
       <div className="flex flex-col items-start">
-        <img src="/logo_footer.png" alt="Venus Logo" className="h-10 mb-6" />
+        {/* Replace <img> with Next.js <Image> for logo */}
+        <Image
+          src="/logo_footer.png"
+          alt="Логотип"
+          width={120}
+          height={40}
+          className="mb-4"
+        />
         <div className="text-lg leading-relaxed max-w-xs">
           Ми створюємо унікальні фотошпалери, стильні сувеніри та поліграфію на
           замовлення. Якість, швидкість і турбота — наші головні принципи.

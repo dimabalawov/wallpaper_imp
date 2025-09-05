@@ -1,6 +1,9 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import AddToCartIcon from "@/components/Media/AddToCartIcon";
-import WishlistIcon from "@/components/Media/WishlistIcon";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import Link from "next/link";
 
 interface ProductPreviewProps {
   imageUrl?: string;
@@ -11,21 +14,31 @@ interface ProductPreviewProps {
 }
 
 const ProductPreview: React.FC<ProductPreviewProps> = ({
-  imageUrl,
   title,
   price,
   oldPrice,
   code = "FOB-2045",
 }) => {
+  const [hovered, setHovered] = useState(false);
   return (
-    <div className="flex flex-col bg-white rounded-xl w-full lg:max-w-[370px] h-full relative">
+    <Link
+      href="/wallpapers/product"
+      className="flex flex-col bg-white rounded-xl w-full lg:max-w-[370px] h-full relative group no-underline"
+    >
       {/* Wishlist button */}
       <button
         type="button"
-        className="absolute top-4 right-4 z-10 p-2 rounded-lg cursor-pointer ransition-colors"
+        className="absolute top-4 right-4 z-10 p-2 rounded-lg cursor-pointer transition-colors"
         aria-label="Додати в обране"
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+        onClick={(e) => e.preventDefault()}
       >
-        <WishlistIcon className="text-navy" />
+        {hovered ? (
+          <FavoriteIcon className="text-navy" style={{ fontSize: 34 }} />
+        ) : (
+          <FavoriteBorderIcon className="text-navy" style={{ fontSize: 34 }} />
+        )}
       </button>
       {/* Image placeholder */}
       <div className="w-full aspect-square bg-mock rounded-2xl mb-4" />
@@ -53,11 +66,12 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
           type="button"
           className="ml-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
           aria-label="Додати в кошик"
+          onClick={(e) => e.preventDefault()}
         >
           <AddToCartIcon />
         </button>
       </div>
-    </div>
+    </Link>
   );
 };
 

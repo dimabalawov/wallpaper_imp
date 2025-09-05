@@ -11,7 +11,7 @@ const CategorySidebar: React.FC<CategorySidebarProps> = ({
   onCategoryClick,
   activeCategory,
 }) => (
-  <aside className="h-screen border-r border-gray-200 bg-white w-full max-w-xs flex flex-col max-lg:hidden">
+  <aside className="h-100vh border-r border-gray-200 bg-white w-full max-w-xs flex flex-col max-lg:hidden">
     {categories.map((cat) => (
       <button
         key={cat}
