@@ -79,7 +79,7 @@ export default function ProductPage() {
                 <div className="mb-4 text-navy font-medium text-2xl">
                   Введіть розміри стіни
                 </div>
-                <div className="flex max-sm:justify-between sm:gap-4 mb-8">
+                <div className="flex gap-4 mb-8">
                   <DimensionInput
                     label="Ширина"
                     value={width}
