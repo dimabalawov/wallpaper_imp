@@ -42,9 +42,9 @@ export default function Carousel({
       spacing: 16,
     },
     breakpoints: {
-      "(max-width: 1280px)": { slides: { perView: 3 } },
-      "(max-width: 1024px)": { slides: { perView: 2 } },
-      "(max-width: 640px)": { slides: { perView: 1 } },
+      "(max-width: 1280px)": { slides: { perView: 4 } },
+      "(max-width: 1024px)": { slides: { perView: 3 } },
+      "(max-width: 640px)": { slides: { perView: 2 } },
     },
   });
 

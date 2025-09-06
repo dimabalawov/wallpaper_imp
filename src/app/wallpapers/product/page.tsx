@@ -213,7 +213,7 @@ export default function ProductPage() {
           </Slide>
         </div>
       </div>
-      <Carousel visibleCount={4}>
+      <Carousel visibleCount={5}>
         {Array.from({ length: 8 }).map((_, i) => (
           <ProductPreview
             key={i}

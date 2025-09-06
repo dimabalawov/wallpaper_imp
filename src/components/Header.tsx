@@ -79,7 +79,9 @@ const Header: React.FC = () => {
           {/* Icons (Right) */}
           <div className="flex items-center gap-6">
             <SearchIcon {...iconProps} />
-            <CartIcon {...iconProps} />
+            <Link href="/cart" className="cursor-pointer">
+              <CartIcon {...iconProps} />
+            </Link>
           </div>
         </div>
       </div>
