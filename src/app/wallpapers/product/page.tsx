@@ -74,12 +74,12 @@ export default function ProductPage() {
           </div>
           <div className="text-3xl font-black text-navy mb-6">450 грн/м²</div>
           <Slide direction="up" in={true} mountOnEnter unmountOnExit>
-            <div className="border border-teal rounded-xl p-6 pb-8 mb-6">
+            <div className="border border-teal rounded-xl p-4 sm:p-6 pb-8 mb-6">
               <div className="mb-4">
                 <div className="mb-4 text-navy font-medium text-2xl">
                   Введіть розміри стіни
                 </div>
-                <div className="flex gap-4 mb-8">
+                <div className="flex max-sm:justify-between sm:gap-4 mb-8">
                   <DimensionInput
                     label="Ширина"
                     value={width}

@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
-import Slider from "react-slick";
+"use client";
+
+import React from "react";
+import { useKeenSlider } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 interface CarouselProps {
   children: React.ReactNode[];
@@ -23,7 +24,6 @@ function ArrowBtn({
       onClick={onClick}
       disabled={disabled}
       className="w-10 h-10 rounded bg-teal text-white flex items-center justify-center disabled:opacity-40 hover:bg-transparent hover:border-teal hover:border-2 hover:text-teal transition-all"
-      style={{}}
       aria-label={dir === "left" ? "Назад" : "Вперед"}
     >
       {dir === "left" ? <FaChevronLeft /> : <FaChevronRight />}
@@ -35,19 +35,18 @@ export default function Carousel({
   children,
   visibleCount = 4,
 }: CarouselProps) {
-  const sliderRef = useRef<Slider | null>(null);
-  const settings = {
-    infinite: true,
-    speed: 500,
-    slidesToShow: visibleCount,
-    slidesToScroll: 1,
-    arrows: false, // Hide default arrows
-    responsive: [
-      { breakpoint: 1280, settings: { slidesToShow: 3 } },
-      { breakpoint: 1024, settings: { slidesToShow: 2 } },
-      { breakpoint: 640, settings: { slidesToShow: 1 } },
-    ],
-  };
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
+    loop: true,
+    slides: {
+      perView: visibleCount,
+      spacing: 16,
+    },
+    breakpoints: {
+      "(max-width: 1280px)": { slides: { perView: 3 } },
+      "(max-width: 1024px)": { slides: { perView: 2 } },
+      "(max-width: 640px)": { slides: { perView: 1 } },
+    },
+  });
 
   return (
     <div className="w-full">
@@ -56,20 +55,17 @@ export default function Carousel({
           Також рекомендуємо
         </h2>
         <div className="flex gap-3 absolute right-3 top-0 max-sm:top-14 z-20">
-          <ArrowBtn dir="left" onClick={() => sliderRef.current?.slickPrev()} />
-          <ArrowBtn
-            dir="right"
-            onClick={() => sliderRef.current?.slickNext()}
-          />
+          <ArrowBtn dir="left" onClick={() => instanceRef.current?.prev()} />
+          <ArrowBtn dir="right" onClick={() => instanceRef.current?.next()} />
         </div>
       </div>
-      <Slider ref={sliderRef} {...settings} className="flex gap-8">
+      <div ref={sliderRef} className="keen-slider">
         {children.map((child, idx) => (
-          <div key={idx} className="flex-1 min-w-0 px-2">
+          <div key={idx} className="keen-slider__slide px-2">
             {child}
           </div>
         ))}
-      </Slider>
+      </div>
     </div>
   );
 }
