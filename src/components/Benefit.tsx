@@ -8,8 +8,13 @@ interface BenefitProps {
 
 const Benefit: React.FC<BenefitProps> = ({ title, description, icon }) => (
   <div className="flex max-xl:flex-row flex-col w-full gap-4">
-    <div className="flex-shrink-0 flex items-center justify-center w-12 h-12">
-      {icon}
+    <div className="flex items-center justify-center w-20 h-20">
+      {React.isValidElement(icon)
+        ? React.cloneElement(icon as React.ReactElement<any, any>, {
+            width: 64,
+            height: 64,
+          })
+        : icon}
     </div>
     <div className="flex-1">
       <h3 className="text-xl sm:text-2xl font-semibold text-black">{title}</h3>
