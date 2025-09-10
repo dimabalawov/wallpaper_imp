@@ -1,7 +1,6 @@
 "use client";
 import React, { useState } from "react";
 import DimensionInput from "@/components/DimensionInput";
-import Slide from "@mui/material/Slide";
 import Carousel from "@/components/Carousel";
 import ProductPreview from "@/components/ProductPreview";
 import ArrowHorizontalIcon from "@/components/Media/ArrowHorizontalIcon";

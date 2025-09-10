@@ -1,8 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import AddToCartIcon from "@/components/Media/AddToCartIcon";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import Link from "next/link";
 
 interface ProductPreviewProps {
@@ -19,7 +17,6 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
   oldPrice,
   code = "FOB-2045",
 }) => {
-  const [hovered, setHovered] = useState(false);
   return (
     <Link
       href="/wallpapers/product"

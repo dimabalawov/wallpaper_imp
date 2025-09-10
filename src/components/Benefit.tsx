@@ -1,4 +1,4 @@
-import React from "react";
+import React, { ReactElement, SVGProps } from "react";
 
 interface BenefitProps {
   title: string;
@@ -10,7 +10,7 @@ const Benefit: React.FC<BenefitProps> = ({ title, description, icon }) => (
   <div className="flex max-xl:flex-row flex-col w-full gap-4">
     <div className="flex items-center justify-center w-20 h-20">
       {React.isValidElement(icon)
-        ? React.cloneElement(icon as React.ReactElement<any, any>, {
+        ? React.cloneElement(icon as ReactElement<SVGProps<SVGSVGElement>>, {
             width: 64,
             height: 64,
           })
