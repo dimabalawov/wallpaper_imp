@@ -1,12 +1,14 @@
 import React from "react";
 
-const PaymentIcon: React.FC = (props) => (
+const PaymentIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({
+  className,
+  ...props
+}) => (
   <svg
-    width="76"
-    height="57"
     viewBox="0 0 76 57"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
     {...props}
   >
     <rect

@@ -16,7 +16,7 @@ export default function WallpapersPage() {
     <div className="flex flex-row px-[clamp(1rem,6vw,7.5rem)] gap-y-20 xl:gap-y-30 py-4 lg:py-8">
       <CategorySidebar categories={categories} />
       <div className="flex flex-col w-full lg:ml-8">
-        <h2 className="text-black font-semibold text-3xl md:text-4xl mb-8 lg:mb-10">
+        <h2 className="text-black font-semibold text-2xl md:text-3xl mb-8 lg:mb-10">
           Фотошпалери
         </h2>
         <Pagination
@@ -63,6 +63,11 @@ export default function WallpapersPage() {
           className="mb-8 lg:mb-12"
         />
         <div className="grid w-full grid-cols-2 xl:grid-cols-3 gap-[clamp(1rem,2vw,2.5rem)]">
+          <ProductPreview
+            title="Казковий ліс"
+            price="450 грн/м²"
+            oldPrice="450 грн/м²"
+          />
           <ProductPreview
             title="Казковий ліс"
             price="450 грн/м²"

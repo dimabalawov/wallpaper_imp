@@ -1,12 +1,14 @@
 import React from "react";
 
-const DeliveryIcon: React.FC = (props) => (
+const DeliveryIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({
+  className,
+  ...props
+}) => (
   <svg
-    width="108"
-    height="65"
     viewBox="0 0 108 65"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
     {...props}
   >
     <g clipPath="url(#clip0_121_93)">

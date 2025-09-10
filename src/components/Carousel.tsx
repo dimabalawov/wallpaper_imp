@@ -51,7 +51,7 @@ export default function Carousel({
   return (
     <div className="w-full">
       <div className="flex items-center justify-between mb-6 relative">
-        <h2 className="text-3xl font-semibold text-navy max-sm:text-center w-full max-sm:mb-14">
+        <h2 className="text-2xl sm:text-3xl font-semibold text-navy max-sm:text-center w-full max-sm:mb-14">
           Також рекомендуємо
         </h2>
         <div className="flex gap-3 absolute right-3 top-0 max-sm:top-14 z-20">

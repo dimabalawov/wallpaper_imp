@@ -34,9 +34,6 @@ const cartItems = [
 const CartPage = () => {
   return (
     <div className="flex flex-col px-4 sm:px-8 md:px-[clamp(2rem,6vw,8rem)] lg:px-[clamp(3rem,10vw,16rem)] py-8">
-      <div className="text-3xl text-navy text-extrabold mb-4">
-        Оформлення замовлення
-      </div>
       <div className="flex flex-col lg:flex-row justify-between gap-8 mb-6">
         <div className="space-y-8 max-w-250 w-full border-2 border-teal rounded-lg p-6">
           <h1 className="text-xl sm:text-2xl font-semibold mb-6 text-navy">
@@ -70,7 +67,7 @@ const CartPage = () => {
               </div>
             </div>
           </div>
-          <button className="bg-teal uppercase text-white font-bold w-full rounded-lg px-8 py-3 sm:text-xl hover:bg-transparent hover:text-teal border-2 border-teal transition-colors">
+          <button className="bg-teal uppercase text-white font-bold w-full rounded-lg px-8 py-3 sm:text-xl hover:bg-transparent hover:text-teal border-2 border-teal transition-colors max-sm:mb-8">
             оформити замовлення
           </button>
         </div>

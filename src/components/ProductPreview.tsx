@@ -25,7 +25,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
       href="/wallpapers/product"
       className="flex flex-col bg-white rounded-xl w-full lg:max-w-[370px] h-full relative group no-underline"
     >
-      {/* Wishlist button */}
+      {/* Wishlist button
       <button
         type="button"
         className="absolute top-4 right-4 z-10 p-2 rounded-lg cursor-pointer transition-colors"
@@ -39,7 +39,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
         ) : (
           <FavoriteBorderIcon className="text-navy" style={{ fontSize: 34 }} />
         )}
-      </button>
+      </button> */}
       {/* Image placeholder */}
       <div className="w-full aspect-square bg-mock rounded-2xl mb-4" />
       {/* Title */}

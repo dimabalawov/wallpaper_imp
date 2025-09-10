@@ -13,7 +13,7 @@ export default function Home() {
       <Banner />
       <div className="flex flex-col px-[clamp(1rem,6vw,7.5rem)] gap-y-20 xl:gap-y-30 py-14 lg:py-20">
         <div className="flex flex-col gap-y-8 gap-x-10 md:flex-row">
-          <CategoryPreview title="Фотошпалери" />
+          <CategoryPreview title="Фотошпалери" link="/wallpapers" />
           <CategoryPreview title="Сувеніри" />
           <CategoryPreview title="Поліграфія" />
         </div>
@@ -54,7 +54,7 @@ export default function Home() {
             </h3>
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 my-12">
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 my-12">
             <ProductPreview
               title="Казковий ліс"
               price="450 грн/м²"

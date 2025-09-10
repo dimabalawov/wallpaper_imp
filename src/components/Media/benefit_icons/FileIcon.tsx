@@ -1,12 +1,16 @@
 import React from "react";
 
-const FileIcon: React.FC = (props) => (
+const FileIcon: React.FC<React.SVGProps<SVGSVGElement>> = ({
+  className,
+  ...props
+}) => (
   <svg
-    width="45"
-    height="60"
+    width={"33"}
+    height={"73"}
     viewBox="0 0 53 73"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
+    className={className}
     {...props}
   >
     <g clipPath="url(#clip0_121_85)">
