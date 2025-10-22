@@ -1,0 +1,15 @@
+overwrite: true
+schema: "http://projecty.local/graphql"
+documents: "src/**/*.{graphql,ts,tsx}" # Сканувати запити у ваших файлах .ts/.tsx
+generates:
+  # 1. Шлях до вихідного файлу та загальні плагіни для типів
+  types/graphql-types.ts: 
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-graphql-request # Плагін для створення готових хуків/функцій запитів
+    config:
+      # Важливо: Налаштовуємо скаляри для правильної типізації числових ID
+      scalars:
+        Int: number
+        Float: number

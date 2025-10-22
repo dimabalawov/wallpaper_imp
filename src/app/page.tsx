@@ -6,16 +6,27 @@ import DeliveryIcon from "@/components/Media/benefit_icons/DeliveryIcon";
 import HandsIcon from "@/components/Media/benefit_icons/HandsIcon";
 import PaymentIcon from "@/components/Media/benefit_icons/PaymentIcon";
 import ProductPreview from "@/components/ProductPreview";
+import { sdk } from "@/lib/api";
 
-export default function Home() {
+export default async function Home() {
+  const { productCategories } = await sdk.TopLevelCategoriesWithImages();
+  const categories = productCategories?.nodes || [];
+
   return (
     <div>
       <Banner />
       <div className="flex flex-col px-[clamp(1rem,6vw,7.5rem)] gap-y-20 xl:gap-y-30 py-14 lg:py-20">
         <div className="flex flex-col gap-y-8 gap-x-10 md:flex-row">
-          <CategoryPreview title="Фотошпалери" link="/wallpapers" />
-          <CategoryPreview title="Сувеніри" />
-          <CategoryPreview title="Поліграфія" />
+          {categories.map((category) => (
+            <CategoryPreview
+              key={category.databaseId}
+              title={category.name || "Категорія недоступна"}
+              link={`/${category.slug}`}
+              imageUrl={
+                category.image?.sourceUrl || "/placeholder-category.jpg"
+              }
+            />
+          ))}
         </div>
         <div className="flex flex-col items-center">
           <h2 className="text-navy font-semibold text-3xl md:text-4xl mb-13">
@@ -54,47 +65,60 @@ export default function Home() {
             </h3>
           </div>
 
+          {/* <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 my-12">
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+            <ProductPreview
+              title="Казковий ліс"
+              price="450 грн/м²"
+              oldPrice="450 грн/м²"
+            />
+          </div> */}
           <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 my-12">
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
+            {Array.from({ length: 8 }).map((_, i) => (
+              <ProductPreview
+                key={i}
+                imageUrl="/placeholder.jpg"
+                slug="kazkovyi-lis"
+                title="Фотошпалери багато золотистих пір'їнок"
+                price="450 грн/м²"
+                oldPrice="550 грн/м²"
+                sku="FOB-2045"
+              />
+            ))}
           </div>
         </div>
       </div>

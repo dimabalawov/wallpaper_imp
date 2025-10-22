@@ -1,0 +1,93 @@
+query ProductBySlug($slug: ID!) {
+  product(id: $slug, idType: SLUG) {
+    __typename
+    id
+    databaseId
+    name
+    sku
+    slug
+
+    image {
+      sourceUrl
+      altText
+      mediaDetails {
+        height
+        width
+      }
+    }
+    description(format: RAW)
+
+    ... on ProductWithPricing {
+      regularPrice(format: RAW)
+      salePrice(format: RAW)
+    }
+
+    attributes {
+      nodes {
+        __typename
+        ... on GlobalProductAttribute {
+          attributeId
+          name
+          slug # 'pa_material' or 'pa_extra_features'
+          terms {
+            nodes {
+              __typename
+              databaseId
+              name
+              slug
+              description
+
+              # --- 1. Поля для "pa_material" ---
+              ... on PaMaterial {
+                # Запитуємо групу "materials_extra" (з першого скріншоту)
+                materialsExtra {
+                  price_modifier # поле 'price_modifier' всередині
+                  material_image {
+                    node {
+                      sourceUrl
+                      altText
+                    }
+                  }
+                }
+              }
+
+              # --- 2. Поля для "pa_extra_features" ---
+              ... on PaExtraFeatures {
+                # Запитуємо групу "extraServiceFields" (з другого скріншоту)
+                extraServiceFields {
+                  price # поле 'price' всередині
+                  price_type # поле 'price_type' всередині
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    ... on SimpleProduct {
+      galleryImages {
+        nodes {
+          sourceUrl
+          altText
+        }
+      }
+      characteristics {
+        density
+        waterproof
+        recommended_rooms
+      }
+    }
+
+    ... on VariableProduct {
+      variations {
+        nodes {
+          databaseId
+          name
+          price(format: RAW)
+          sku
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+query ProductsPaginated($first: Int, $after: String) {
+  # Передаем переменные в `products`
+  products(first: $first, after: $after) {
+    # Добавляем pageInfo - это ключ к пагинации
+    pageInfo {
+      hasNextPage # Есть ли следующая страница? (true/false)
+      endCursor # Курсор последнего элемента в текущем списке
+    }
+    nodes {
+      databaseId
+      name
+      slug
+      sku
+      image {
+        sourceUrl
+        altText
+      }
+      ... on ProductWithPricing {
+        regularPrice(format: RAW)
+        salePrice(format: RAW)
+      }
+    }
+  }
+}

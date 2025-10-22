@@ -22,14 +22,7 @@ const CategoryPreview: React.FC<CategoryPreviewProps> = ({
             alt={title}
             layout="fill"
             objectFit="cover"
-            className="absolute inset-0 w-full h-full object-cover opacity-40"
-          />
-          <Image
-            src={imageUrl}
-            alt={title}
-            width={120}
-            height={120}
-            className="mb-4"
+            className="absolute inset-0 w-full h-full object-cover opacity-70"
           />
         </>
       )}

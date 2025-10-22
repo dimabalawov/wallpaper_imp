@@ -1,0 +1,15 @@
+query TopLevelCategoriesWithImages {
+  productCategories(where: { parent: null, orderby: TERM_ORDER }, first: 10) {
+    nodes {
+      databaseId
+      name
+      slug
+      count
+      image {
+        id
+        sourceUrl
+        altText
+      }
+    }
+  }
+}
