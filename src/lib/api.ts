@@ -7,5 +7,9 @@ if (!API_URL) {
   throw new Error('NEXT_PUBLIC_WORDPRESS_API_URL не визначено');
 }
 
-export const client = new GraphQLClient(API_URL);
+export const client = new GraphQLClient(API_URL,{
+  method: 'POST',
+  headers: {
+  },
+});
 export const sdk = getSdk(client);
