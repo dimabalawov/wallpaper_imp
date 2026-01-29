@@ -75,9 +75,12 @@ export default function CartPage() {
               </div>
             </div>
           </div>
-          <button className="bg-teal uppercase text-white font-bold w-full rounded-lg px-8 py-3 sm:text-xl hover:bg-transparent hover:text-teal border-2 border-teal transition-colors max-sm:mb-8">
+          <Link
+            href="/checkout"
+            className="bg-teal uppercase text-white font-bold w-full rounded-lg px-8 py-3 sm:text-xl hover:bg-transparent hover:text-teal border-2 border-teal transition-colors max-sm:mb-8 text-center block"
+          >
             оформити замовлення
-          </button>
+          </Link>
         </div>
       </div>
       <Link

@@ -63,7 +63,7 @@ export default function Header() {
               </svg>
             </DisclosureButton>
             <Link href="/" className="flex items-center flex-shrink-0">
-              <Image src="/logo.png" alt="Logo" width={92} height={44} />
+              <Image src="/logo.png" alt="Faktura Print Studio" width={100} height={44} />
             </Link>
           </div>
 

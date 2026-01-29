@@ -12,9 +12,9 @@ const Footer: React.FC = () => (
         {/* Replace <img> with Next.js <Image> for logo */}
         <Image
           src="/logo_footer.png"
-          alt="Логотип"
+          alt="Faktura Print Studio"
           width={120}
-          height={40}
+          height={53}
           className="mb-4"
         />
         <div className="text-lg leading-relaxed max-w-xs">

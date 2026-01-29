@@ -1,10 +1,9 @@
 "use server";
 
 import { sdk } from "@/lib/api";
-// Убедитесь, что codegen сгенерировал тип ProductsPaginatedQuery
 import { ProductsPaginatedQuery } from "../../../types/graphql-types";
 
-// Определяем тип для одного узла-продукта
+// Product node type
 export type ProductNode = NonNullable<
   ProductsPaginatedQuery["products"]
 > extends {
@@ -13,26 +12,54 @@ export type ProductNode = NonNullable<
   ? T
   : never;
 
-// Определяем тип для ответа, который будет возвращать функция
+// Response type with error field
 export type PaginatedProductsResponse = {
   products: ProductNode[];
   hasNextPage: boolean;
   endCursor: string | null;
+  error?: string;
 };
 
+// Constants for validation
+const MAX_LIMIT = 50;
+const MIN_LIMIT = 1;
+
 /**
- * Функция для получения следующей порции товаров с использованием курсора.
- * @param limit - Количество товаров для загрузки
- * @param cursor - Курсор последнего элемента предыдущей страницы (или null для первой)
- * @returns Объект с товарами и информацией для следующей страницы
+ * Fetches paginated products using cursor-based pagination.
+ * @param limit - Number of products to fetch (1-50)
+ * @param cursor - Cursor from previous page (or null for first page)
+ * @returns Products with pagination info
  */
 export async function fetchProductsByCursor(
   limit: number,
   cursor: string | null
 ): Promise<PaginatedProductsResponse> {
+  // Input validation
+  if (typeof limit !== "number" || !Number.isInteger(limit)) {
+    return {
+      products: [],
+      hasNextPage: false,
+      endCursor: null,
+      error: "Invalid limit parameter",
+    };
+  }
+
+  // Clamp limit to valid range
+  const safeLimit = Math.max(MIN_LIMIT, Math.min(MAX_LIMIT, limit));
+
+  // Validate cursor format (should be base64 or null)
+  if (cursor !== null && typeof cursor !== "string") {
+    return {
+      products: [],
+      hasNextPage: false,
+      endCursor: null,
+      error: "Invalid cursor parameter",
+    };
+  }
+
   try {
     const result = await sdk.ProductsPaginated({
-      first: limit,
+      first: safeLimit,
       after: cursor,
     });
 
@@ -46,11 +73,11 @@ export async function fetchProductsByCursor(
     };
   } catch (error) {
     console.error("Failed to fetch paginated products:", error);
-    // Возвращаем пустой результат в случае ошибки
     return {
       products: [],
       hasNextPage: false,
       endCursor: null,
+      error: "Failed to load products",
     };
   }
 }

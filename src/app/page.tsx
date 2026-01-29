@@ -7,26 +7,111 @@ import HandsIcon from "@/components/Media/benefit_icons/HandsIcon";
 import PaymentIcon from "@/components/Media/benefit_icons/PaymentIcon";
 import ProductPreview from "@/components/ProductPreview";
 import { sdk } from "@/lib/api";
+import {
+  BannerSkeleton,
+  CategorySkeleton,
+  ProductGridSkeleton,
+} from "@/components/ProductSkeleton";
+import { HomepageBannerQuery } from "../../types/graphql-types";
+import Link from "next/link";
+
+type BannerData = NonNullable<NonNullable<HomepageBannerQuery["page"]>["banner"]> | null;
+
+type Category = {
+  databaseId: number;
+  name?: string | null;
+  slug?: string | null;
+  image?: {
+    sourceUrl?: string | null;
+  } | null;
+};
+
+type Product = {
+  databaseId: number;
+  name?: string | null;
+  slug?: string | null;
+  sku?: string | null;
+  salePrice?: string | null;
+  regularPrice?: string | null;
+  image?: {
+    sourceUrl?: string | null;
+  } | null;
+};
+
+async function getHomePageData(): Promise<{
+  categories: Category[];
+  featuredProducts: Product[];
+  bannerData: BannerData;
+  error: string | null;
+}> {
+  try {
+    const [categoriesResult, productsResult, bannerResult] = await Promise.all([
+      sdk.TopLevelCategoriesWithImages().catch(() => ({ productCategories: null })),
+      sdk.FeaturedProducts({ count: 8 }).catch(() => ({ products: null })),
+      sdk.HomepageBanner().catch(() => ({ page: null })),
+    ]);
+
+    return {
+      categories: (categoriesResult.productCategories?.nodes as Category[]) || [],
+      featuredProducts: (productsResult.products?.nodes as Product[]) || [],
+      bannerData: bannerResult.page?.banner ?? null,
+      error: null,
+    };
+  } catch (error) {
+    console.error("Error fetching homepage data:", error);
+    return {
+      categories: [],
+      featuredProducts: [],
+      bannerData: null,
+      error: "Не вдалося завантажити дані. Спробуйте оновити сторінку.",
+    };
+  }
+}
 
 export default async function Home() {
-  const { productCategories } = await sdk.TopLevelCategoriesWithImages();
-  const categories = productCategories?.nodes || [];
+  const { categories, featuredProducts, bannerData, error } =
+    await getHomePageData();
+
+  if (error && categories.length === 0 && featuredProducts.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[50vh] px-4">
+        <h1 className="text-2xl font-bold text-gray-800 mb-4">
+          Щось пішло не так
+        </h1>
+        <p className="text-gray-600 mb-6">{error}</p>
+        <Link
+          href="/"
+          className="px-6 py-3 bg-[#577C8E] text-white rounded-md hover:bg-[#4a6b7b] transition-colors"
+        >
+          Оновити сторінку
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <Banner />
-      <div className="flex flex-col px-[clamp(1rem,6vw,7.5rem)] gap-y-20 xl:gap-y-30 py-14 lg:py-20">
+      {bannerData ? (
+        <Banner banner={bannerData} />
+      ) : (
+        <BannerSkeleton />
+      )}
+      <div className="flex flex-col px-[clamp(0.5rem,2vw,2rem)] gap-y-20 xl:gap-y-30 py-14 lg:py-20">
         <div className="flex flex-col gap-y-8 gap-x-10 md:flex-row">
-          {categories.map((category) => (
-            <CategoryPreview
-              key={category.databaseId}
-              title={category.name || "Категорія недоступна"}
-              link={`/${category.slug}`}
-              imageUrl={
-                category.image?.sourceUrl || "/placeholder-category.jpg"
-              }
-            />
-          ))}
+          {categories.length > 0
+            ? categories.map((category) => (
+                <CategoryPreview
+                  key={category.databaseId}
+                  title={category.name || "Категорія недоступна"}
+                  link={`/${category.slug}`}
+                  imageUrl={
+                    category.image?.sourceUrl || "/placeholder-category.jpg"
+                  }
+                />
+              ))
+            : Array.from({ length: 3 }).map((_, i) => (
+                <CategorySkeleton key={i} />
+              ))}
         </div>
         <div className="flex flex-col items-center">
           <h2 className="text-navy font-semibold text-3xl md:text-4xl mb-13">
@@ -60,65 +145,31 @@ export default async function Home() {
             <h2 className="text-navy font-semibold max-md:text-3xl text-4xl mb-5">
               Популярні товари
             </h2>
-            <h3 className="text-black  max-md:hidden font-normal text-xl">
+            <h3 className="text-black max-md:hidden font-normal text-xl">
               Вибране для вас — бестселери, новинки та хіти продажів
             </h3>
           </div>
 
-          {/* <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 my-12">
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-            <ProductPreview
-              title="Казковий ліс"
-              price="450 грн/м²"
-              oldPrice="450 грн/м²"
-            />
-          </div> */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-8 my-12">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <ProductPreview
-                key={i}
-                imageUrl="/placeholder.jpg"
-                slug="kazkovyi-lis"
-                title="Фотошпалери багато золотистих пір'їнок"
-                price="450 грн/м²"
-                oldPrice="550 грн/м²"
-                sku="FOB-2045"
-              />
-            ))}
+          <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 my-12">
+            {featuredProducts.length > 0 ? (
+              featuredProducts.map((product) => (
+                <ProductPreview
+                  key={product.databaseId}
+                  imageUrl={product.image?.sourceUrl || "/placeholder.jpg"}
+                  sku={product.sku || "N/A"}
+                  title={product.name || "Назва відсутня"}
+                  price={product.salePrice ?? product.regularPrice ?? "N/A"}
+                  oldPrice={
+                    product.regularPrice !== product.salePrice
+                      ? product.regularPrice ?? undefined
+                      : undefined
+                  }
+                  slug={product.slug || ""}
+                />
+              ))
+            ) : (
+              <ProductGridSkeleton count={8} />
+            )}
           </div>
         </div>
       </div>

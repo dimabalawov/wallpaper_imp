@@ -1,0 +1,18 @@
+query FeaturedProducts($count: Int = 8) {
+  products(where: { featured: true }, first: $count) {
+    nodes {
+      databaseId
+      name
+      slug
+      sku
+      image {
+        sourceUrl
+        altText
+      }
+      ... on ProductWithPricing {
+        regularPrice(format: RAW)
+        salePrice(format: RAW)
+      }
+    }
+  }
+}

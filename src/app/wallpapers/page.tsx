@@ -1,18 +1,54 @@
 import CategorySidebar from "@/components/CategorySidebar";
 import ProductLoader from "@/components/ProductLoader";
+import { ProductGridSkeleton } from "@/components/ProductSkeleton";
 import { sdk } from "@/lib/api";
+import Link from "next/link";
 
-const ITEMS_PER_PAGE = 1; // Количество товаров на одну загрузку
+const ITEMS_PER_PAGE = 12;
+
+type ProductNode = {
+  databaseId: number;
+  name?: string | null;
+  slug?: string | null;
+  sku?: string | null;
+  salePrice?: string | null;
+  regularPrice?: string | null;
+  image?: {
+    sourceUrl?: string | null;
+  } | null;
+};
+
+async function getWallpapersData(): Promise<{
+  products: ProductNode[];
+  hasNextPage: boolean;
+  endCursor: string | null;
+  error: string | null;
+}> {
+  try {
+    const initialData = await sdk.ProductsPaginated({
+      first: ITEMS_PER_PAGE,
+      after: null,
+    });
+
+    return {
+      products: (initialData.products?.nodes as ProductNode[]) || [],
+      hasNextPage: initialData.products?.pageInfo?.hasNextPage || false,
+      endCursor: initialData.products?.pageInfo?.endCursor || null,
+      error: null,
+    };
+  } catch (error) {
+    console.error("Error fetching wallpapers:", error);
+    return {
+      products: [],
+      hasNextPage: false,
+      endCursor: null,
+      error: "Не вдалося завантажити товари. Спробуйте оновити сторінку.",
+    };
+  }
+}
 
 export default async function WallpapersPage() {
-  // Загружаем самую первую страницу
-  const initialData = await sdk.ProductsPaginated({
-    first: ITEMS_PER_PAGE,
-    after: null, // `null` для первого запроса
-  });
-
-  const initialProducts = initialData.products?.nodes || [];
-  const initialPageInfo = initialData.products?.pageInfo;
+  const { products, hasNextPage, endCursor, error } = await getWallpapersData();
 
   const categories = [
     "ФОТОШПАЛЕРИ В ДИТЯЧУ",
@@ -32,14 +68,25 @@ export default async function WallpapersPage() {
           Фотошпалери
         </h2>
 
-        {/* Передаем начальные данные в клиентский компонент,
-          который будет управлять дальнейшей загрузкой.
-        */}
-        <ProductLoader
-          initialProducts={initialProducts}
-          initialHasNextPage={initialPageInfo?.hasNextPage || false}
-          initialEndCursor={initialPageInfo?.endCursor || null}
-        />
+        {error ? (
+          <div className="flex flex-col items-center justify-center py-12">
+            <p className="text-red-600 mb-4">{error}</p>
+            <Link
+              href="/wallpapers"
+              className="px-6 py-3 bg-[#577C8E] text-white rounded-md hover:bg-[#4a6b7b] transition-colors"
+            >
+              Спробувати ще раз
+            </Link>
+          </div>
+        ) : products.length === 0 ? (
+          <ProductGridSkeleton count={12} />
+        ) : (
+          <ProductLoader
+            initialProducts={products}
+            initialHasNextPage={hasNextPage}
+            initialEndCursor={endCursor}
+          />
+        )}
       </div>
     </div>
   );

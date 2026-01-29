@@ -1,0 +1,16 @@
+query HomepageBanner {
+  page(id: "/nalashtuvannya-golovnoi", idType: URI) {
+    banner {
+      bannerImage {
+        node {
+          sourceUrl
+          altText
+        }
+      }
+      bannerTitle
+      bannerSubtitle
+      bannerButtonLink
+      bannerButtonText
+    }
+  }
+}

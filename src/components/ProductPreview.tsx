@@ -2,7 +2,7 @@
 import React from "react";
 import AddToCartIcon from "@/components/Media/AddToCartIcon";
 import Link from "next/link";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 
 interface ProductPreviewProps {
   imageUrl?: string;
@@ -27,13 +27,14 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
     >
       <div className="w-full flex flex-col h-full">
         <div className="w-full aspect-square bg-mock rounded-2xl mb-4 relative overflow-hidden">
-          <Image
+          <SafeImage
             src={imageUrl || "/placeholder.jpg"}
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, 370px"
             className="object-cover rounded-2xl"
             priority={false}
+            fallback="/placeholder.jpg"
           />
         </div>
         {/* Title */}

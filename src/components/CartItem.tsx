@@ -16,6 +16,12 @@ export default function CartItemNew({ item }: CartItemProps) {
   if (item.laminate) options.push("Ламінування");
   if (item.glue) options.push("Клей у комплекті");
 
+  const handleRemove = () => {
+    if (window.confirm(`Видалити "${item.name}" з кошика?`)) {
+      removeItem(item.id);
+    }
+  };
+
   return (
     <div className="flex flex-col sm:flex-row gap-4 items-start">
       <div className="min-w-40 max-sm:min-w-50 aspect-square bg-mock rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden">
@@ -34,7 +40,7 @@ export default function CartItemNew({ item }: CartItemProps) {
               {item.name}
             </h3>
             <button
-              onClick={() => removeItem(item.id)}
+              onClick={handleRemove}
               className="text-gray-400 hover:text-red-500 transition-colors font-bold text-2xl"
               aria-label="Видалити товар"
             >

@@ -8,10 +8,10 @@ import ArrowHorizontalIcon from "@/components/Media/ArrowHorizontalIcon";
 import ArrowVerticalIcon from "@/components/Media/ArrowVerticalIcon";
 import Extra from "@/components/Extra";
 import Material from "@/components/Material";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 import {
   ProductBySlugQuery,
-  // Нам потрібні ці типи для type guard
   GlobalProductAttribute,
   PaMaterial,
   PaExtraFeatures,
@@ -211,11 +211,9 @@ export default function ProductClient({
             <div className="font-semibold text-2xl text-navy mb-2">Опис:</div>
             <div
               className="mb-4 text-[#2F4157] text-base"
-              dangerouslySetInnerHTML={
-                product?.description
-                  ? { __html: product.description }
-                  : { __html: "<p>Опис товару відсутній.</p>" }
-              }
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(product?.description || "<p>Опис товару відсутній.</p>"),
+              }}
             />
             <div className="font-semibold text-2xl text-navy mb-2 mt-6">
               Характеристики:
@@ -263,11 +261,9 @@ export default function ProductClient({
             <div className="font-semibold text-2xl text-navy mb-2">Опис:</div>
             <div
               className="mb-4 text-[#2F4157] text-base"
-              dangerouslySetInnerHTML={
-                product?.description
-                  ? { __html: product.description }
-                  : { __html: "<p>Опис товару відсутній.</p>" }
-              }
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(product?.description || "<p>Опис товару відсутній.</p>"),
+              }}
             />
             <div className="font-semibold text-2xl text-navy mb-2 mt-6">
               Характеристики:

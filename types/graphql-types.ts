@@ -35,7 +35,7 @@ export type AcfFieldGroupFields = {
   fieldGroupName?: Maybe<Scalars['String']['output']>;
 };
 
-/** Connection between the MaterialsExtra_Fields type and the MediaItem type */
+/** Connection between the Banner_Fields type and the MediaItem type */
 export type AcfMediaItemConnectionEdge = Edge & MediaItemConnectionEdge & OneToOneConnection & {
   __typename?: 'AcfMediaItemConnectionEdge';
   /** Opaque reference to the nodes position in the connection. Value can be used with pagination args. */
@@ -228,6 +228,45 @@ export enum BackordersEnum {
   Notify = 'NOTIFY',
   Yes = 'YES'
 }
+
+/** The &quot;Banner&quot; Field Group. Added to the Schema by &quot;WPGraphQL for ACF&quot;. */
+export type Banner = AcfFieldGroup & AcfFieldGroupFields & Banner_Fields & {
+  __typename?: 'Banner';
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;Banner&quot; Field Group */
+  bannerButtonLink?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;Banner&quot; Field Group */
+  bannerButtonText?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;image&quot; Field Type added to the schema as part of the &quot;Banner&quot; Field Group */
+  bannerImage?: Maybe<AcfMediaItemConnectionEdge>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;Banner&quot; Field Group */
+  bannerSubtitle?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;Banner&quot; Field Group */
+  bannerTitle?: Maybe<Scalars['String']['output']>;
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
+
+/** Interface representing fields of the ACF &quot;Banner&quot; Field Group */
+export type Banner_Fields = {
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;Banner&quot; Field Group */
+  bannerButtonLink?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;Banner&quot; Field Group */
+  bannerButtonText?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;image&quot; Field Type added to the schema as part of the &quot;Banner&quot; Field Group */
+  bannerImage?: Maybe<AcfMediaItemConnectionEdge>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;Banner&quot; Field Group */
+  bannerSubtitle?: Maybe<Scalars['String']['output']>;
+  /** Field of the &quot;text&quot; Field Type added to the schema as part of the &quot;Banner&quot; Field Group */
+  bannerTitle?: Maybe<Scalars['String']['output']>;
+  /**
+   * The name of the field group
+   * @deprecated Use __typename instead
+   */
+  fieldGroupName?: Maybe<Scalars['String']['output']>;
+};
 
 /** The cart object */
 export type Cart = {
@@ -9970,7 +10009,7 @@ export type PaMaterialToTaxonomyConnectionEdge = Edge & OneToOneConnection & Tax
 };
 
 /** A standalone content entry generally used for static, non-chronological content such as &quot;About Us&quot; or &quot;Contact&quot; pages. */
-export type Page = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & MenuItemLinkable & Node & NodeWithAuthor & NodeWithComments & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithPageAttributes & NodeWithRevisions & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & {
+export type Page = ContentNode & DatabaseIdentifier & HierarchicalContentNode & HierarchicalNode & MenuItemLinkable & Node & NodeWithAuthor & NodeWithComments & NodeWithContentEditor & NodeWithFeaturedImage & NodeWithPageAttributes & NodeWithRevisions & NodeWithTemplate & NodeWithTitle & Previewable & UniformResourceIdentifiable & WithAcfBanner & {
   __typename?: 'Page';
   /** Returns ancestors of the node. Default ordered as lowest (closest to the child) to highest (closest to the root). */
   ancestors?: Maybe<HierarchicalContentNodeToContentNodeAncestorsConnection>;
@@ -9980,6 +10019,8 @@ export type Page = ContentNode & DatabaseIdentifier & HierarchicalContentNode & 
   authorDatabaseId?: Maybe<Scalars['Int']['output']>;
   /** The globally unique identifier of the author of the node */
   authorId?: Maybe<Scalars['ID']['output']>;
+  /** Fields of the Banner ACF Field Group */
+  banner?: Maybe<Banner>;
   /** Connection between the HierarchicalContentNode type and the ContentNode type */
   children?: Maybe<HierarchicalContentNodeToContentNodeChildrenConnection>;
   /** The number of comments. Even though WPGraphQL denotes this field as an integer, in WordPress this field should be saved as a numeric string for compatibility. */
@@ -24944,6 +24985,12 @@ export type WpPageInfo = {
   startCursor?: Maybe<Scalars['String']['output']>;
 };
 
+/** Provides access to fields of the &quot;Banner&quot; ACF Field Group via the &quot;banner&quot; field */
+export type WithAcfBanner = {
+  /** Fields of the Banner ACF Field Group */
+  banner?: Maybe<Banner>;
+};
+
 /** Provides access to fields of the &quot;Characteristics&quot; ACF Field Group via the &quot;characteristics&quot; field */
 export type WithAcfCharacteristics = {
   /** Fields of the Characteristics ACF Field Group */
@@ -25008,10 +25055,28 @@ export type WritingSettings = {
   useSmilies?: Maybe<Scalars['Boolean']['output']>;
 };
 
+export type FeaturedProductsQueryVariables = Exact<{
+  count?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type FeaturedProductsQuery = { __typename?: 'RootQuery', products?: { __typename?: 'RootQueryToProductUnionConnection', nodes: Array<
+      | { __typename?: 'ExternalProduct', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
+      | { __typename?: 'GroupProduct', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
+      | { __typename?: 'SimpleProduct', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
+      | { __typename?: 'SimpleProductVariation', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
+      | { __typename?: 'VariableProduct', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
+    > } | null };
+
 export type HeaderCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type HeaderCategoriesQuery = { __typename?: 'RootQuery', productCategories?: { __typename?: 'RootQueryToProductCategoryConnection', nodes: Array<{ __typename?: 'ProductCategory', databaseId: number, name?: string | null, slug?: string | null, children?: { __typename?: 'ProductCategoryToProductCategoryConnection', nodes: Array<{ __typename?: 'ProductCategory', databaseId: number, name?: string | null, slug?: string | null }> } | null }> } | null };
+
+export type HomepageBannerQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type HomepageBannerQuery = { __typename?: 'RootQuery', page?: { __typename?: 'Page', banner?: { __typename?: 'Banner', bannerTitle?: string | null, bannerSubtitle?: string | null, bannerButtonLink?: string | null, bannerButtonText?: string | null, bannerImage?: { __typename?: 'AcfMediaItemConnectionEdge', node: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } } | null } | null } | null };
 
 export type ProductBySlugQueryVariables = Exact<{
   slug: Scalars['ID']['input'];
@@ -25101,6 +25166,26 @@ export type TopLevelCategoriesWithImagesQueryVariables = Exact<{ [key: string]: 
 export type TopLevelCategoriesWithImagesQuery = { __typename?: 'RootQuery', productCategories?: { __typename?: 'RootQueryToProductCategoryConnection', nodes: Array<{ __typename?: 'ProductCategory', databaseId: number, name?: string | null, slug?: string | null, count?: number | null, image?: { __typename?: 'MediaItem', id: string, sourceUrl?: string | null, altText?: string | null } | null }> } | null };
 
 
+export const FeaturedProductsDocument = gql`
+    query FeaturedProducts($count: Int = 8) {
+  products(where: {featured: true}, first: $count) {
+    nodes {
+      databaseId
+      name
+      slug
+      sku
+      image {
+        sourceUrl
+        altText
+      }
+      ... on ProductWithPricing {
+        regularPrice(format: RAW)
+        salePrice(format: RAW)
+      }
+    }
+  }
+}
+    `;
 export const HeaderCategoriesDocument = gql`
     query HeaderCategories {
   productCategories(where: {parent: null}, first: 100) {
@@ -25115,6 +25200,24 @@ export const HeaderCategoriesDocument = gql`
           slug
         }
       }
+    }
+  }
+}
+    `;
+export const HomepageBannerDocument = gql`
+    query HomepageBanner {
+  page(id: "/nalashtuvannya-golovnoi", idType: URI) {
+    banner {
+      bannerImage {
+        node {
+          sourceUrl
+          altText
+        }
+      }
+      bannerTitle
+      bannerSubtitle
+      bannerButtonLink
+      bannerButtonText
     }
   }
 }
@@ -25252,8 +25355,14 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    FeaturedProducts(variables?: FeaturedProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<FeaturedProductsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<FeaturedProductsQuery>({ document: FeaturedProductsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'FeaturedProducts', 'query', variables);
+    },
     HeaderCategories(variables?: HeaderCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<HeaderCategoriesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<HeaderCategoriesQuery>({ document: HeaderCategoriesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'HeaderCategories', 'query', variables);
+    },
+    HomepageBanner(variables?: HomepageBannerQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<HomepageBannerQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<HomepageBannerQuery>({ document: HomepageBannerDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'HomepageBanner', 'query', variables);
     },
     ProductBySlug(variables: ProductBySlugQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<ProductBySlugQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<ProductBySlugQuery>({ document: ProductBySlugDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'ProductBySlug', 'query', variables);
