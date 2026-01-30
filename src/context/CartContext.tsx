@@ -17,6 +17,7 @@ import { toast } from "react-toastify";
 export type CartItem = {
   id: string;
   productId: string;
+  productDatabaseId?: number;
   name: string;
   price: number;
   width: number;

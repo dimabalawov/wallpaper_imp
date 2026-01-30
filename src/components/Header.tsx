@@ -1,8 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import SearchIcon from "./Media/Search";
 import CartIcon from "./Media/Cart";
 import {
@@ -10,7 +11,7 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
-import { useCart } from "@/context/CartContext"; // 1. Імпортуємо хук кошика
+import { useCart } from "@/context/CartContext";
 
 const iconProps = { width: 24, height: 24, fill: "#2F4156" };
 
@@ -31,11 +32,48 @@ const navLinks = [
 
 export default function Header() {
   const [openCategory, setOpenCategory] = React.useState<string | null>(
-    navLinks[0].label
+    navLinks[0].label,
   );
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
-  // 2. Отримуємо кількість товарів з кошика
   const { itemCount } = useCart();
+
+  // Focus input when search opens
+  useEffect(() => {
+    if (isSearchOpen && searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  }, [isSearchOpen]);
+
+  const handleSearchSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+      setIsSearchOpen(false);
+      setSearchQuery("");
+    }
+  };
+
+  const handleSearchClose = () => {
+    setIsSearchOpen(false);
+    setSearchQuery("");
+  };
+
+  // Close search on click outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (isSearchOpen && !target.closest(".search-container")) {
+        handleSearchClose();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [isSearchOpen]);
 
   return (
     <Disclosure
@@ -63,7 +101,12 @@ export default function Header() {
               </svg>
             </DisclosureButton>
             <Link href="/" className="flex items-center flex-shrink-0">
-              <Image src="/logo.png" alt="Faktura Print Studio" width={100} height={44} />
+              <Image
+                src="/logo.png"
+                alt="Faktura Print Studio"
+                width={150}
+                height={67}
+              />
             </Link>
           </div>
 
@@ -84,8 +127,16 @@ export default function Header() {
 
           {/* Icons (Right) */}
           <div className="flex items-center gap-6">
-            <SearchIcon {...iconProps} />
-            {/* 3. Оновлена іконка кошика з лічильником */}
+            {/* Search Icon */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className={`cursor-pointer hover:opacity-70 transition-opacity duration-300 ${
+                isSearchOpen ? "opacity-0 pointer-events-none" : "opacity-100"
+              }`}
+              aria-label="Пошук"
+            >
+              <SearchIcon {...iconProps} />
+            </button>
             <Link href="/cart" className="relative cursor-pointer group">
               <CartIcon
                 {...iconProps}
@@ -98,6 +149,55 @@ export default function Header() {
               )}
             </Link>
           </div>
+        </div>
+
+        {/* Search Overlay */}
+        <div
+          className={`search-container absolute right-16 sm:right-20 lg:right-28 xl:right-44 top-1/2 -translate-y-1/2 w-1/4 min-w-[280px] origin-right transition-all duration-300 ease-out ${
+            isSearchOpen
+              ? "opacity-100 scale-x-100 pointer-events-auto"
+              : "opacity-0 scale-x-0 pointer-events-none"
+          }`}
+        >
+          <form
+            onSubmit={handleSearchSubmit}
+            className="flex items-center gap-2"
+          >
+            <div className="flex-1 relative">
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Пошук товарів..."
+                className="w-full px-4 py-2 pl-10 text-base border-2 border-teal rounded-lg focus:outline-none focus:ring-2 focus:ring-teal/30 bg-white shadow-lg"
+                onKeyDown={(e) => {
+                  if (e.key === "Escape") {
+                    handleSearchClose();
+                  }
+                }}
+              />
+              <svg
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-teal text-white font-bold rounded-lg hover:bg-teal/90 transition-colors"
+            >
+              Знайти
+            </button>
+          </form>
         </div>
       </div>
 
@@ -138,7 +238,7 @@ export default function Header() {
                       className="ml-2 p-2 -m-2 flex items-center justify-center"
                       onClick={() =>
                         setOpenCategory(
-                          openCategory === cat.label ? null : cat.label
+                          openCategory === cat.label ? null : cat.label,
                         )
                       }
                       aria-label="Розгорнути підкатегорії"

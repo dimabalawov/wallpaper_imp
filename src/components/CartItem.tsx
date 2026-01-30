@@ -23,14 +23,13 @@ export default function CartItemNew({ item }: CartItemProps) {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row gap-4 items-start">
-      <div className="min-w-40 max-sm:min-w-50 aspect-square bg-mock rounded-lg flex-shrink-0 flex items-center justify-center overflow-hidden">
+    <div className="flex flex-row gap-4 items-start">
+      <div className="w-32 h-32 sm:w-40 sm:h-40 bg-mock rounded-lg flex-shrink-0 overflow-hidden relative">
         <Image
           src={item.imageUrl || "/placeholder.jpg"}
           alt={item.name}
-          width={128}
-          height={128}
-          className="w-full h-full object-cover"
+          fill
+          className="object-cover"
         />
       </div>
       <div className="flex flex-col justify-between w-full">

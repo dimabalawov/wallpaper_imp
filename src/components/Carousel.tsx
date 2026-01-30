@@ -59,9 +59,9 @@ export default function Carousel({
           <ArrowBtn dir="right" onClick={() => instanceRef.current?.next()} />
         </div>
       </div>
-      <div ref={sliderRef} className="keen-slider">
+      <div ref={sliderRef} className="keen-slider overflow-visible">
         {children.map((child, idx) => (
-          <div key={idx} className="keen-slider__slide px-2">
+          <div key={idx} className="keen-slider__slide overflow-visible">
             {child}
           </div>
         ))}

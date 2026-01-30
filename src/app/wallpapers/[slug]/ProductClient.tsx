@@ -161,8 +161,13 @@ export default function ProductClient({
       alert("Будь ласка, оберіть матеріал.");
       return;
     }
+    if (!product?.databaseId) {
+      alert("Помилка: товар без ID. Спробуйте оновити сторінку.");
+      return;
+    }
     const newItem: Omit<CartItem, "id"> = {
       productId: product?.sku || "unknown",
+      productDatabaseId: product.databaseId,
       name: product?.name || "Без назви",
       imageUrl: product?.image?.sourceUrl || "/placeholder.jpg",
       price: finalPrice,

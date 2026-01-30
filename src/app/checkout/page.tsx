@@ -30,6 +30,8 @@ export default function CheckoutPage() {
 
   // Payment state
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
 
   // Delivery cost
   const deliveryCost = deliveryMethod === "self-pickup" ? 0 : 60;
@@ -54,25 +56,56 @@ export default function CheckoutPage() {
     );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implement actual order submission
-    console.log("Order submitted:", {
-      surname,
-      name,
-      phone,
-      email,
-      comment,
-      deliveryMethod,
-      deliveryType,
-      city,
-      paymentMethod,
-      items: cartItems,
-      total: totalPrice + deliveryCost,
-    });
+    setSubmitError(null);
 
-    // Redirect to payment or success page
-    router.push("/order-success");
+    if (cartItems.some((item) => !item.productDatabaseId)) {
+      setSubmitError("Деякі товари без ID. Додайте їх до кошика ще раз.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customer: {
+            firstName: name,
+            lastName: surname,
+            phone,
+            email,
+          },
+          comment,
+          delivery: {
+            method: deliveryMethod,
+            type: deliveryType,
+            city,
+            cost: deliveryCost,
+          },
+          paymentMethod,
+          items: cartItems,
+          totals: {
+            itemsTotal: totalPrice,
+            orderTotal: totalPrice + deliveryCost,
+          },
+        }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) {
+        throw new Error(data?.error || "Не вдалося створити замовлення");
+      }
+
+      router.push("/order-success");
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error ? error.message : "Сталася помилка оформлення"
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -389,10 +422,14 @@ export default function CheckoutPage() {
 
             <button
               type="submit"
+              disabled={isSubmitting}
               className="w-full mt-6 bg-teal text-white font-bold uppercase rounded-lg px-8 py-4 text-lg hover:bg-transparent hover:text-teal border-2 border-teal transition-colors"
             >
-              Перейти до оплати
+              {isSubmitting ? "Оформлення..." : "Перейти до оплати"}
             </button>
+            {submitError && (
+              <div className="mt-4 text-sm text-red-600">{submitError}</div>
+            )}
           </div>
         </div>
       </form>

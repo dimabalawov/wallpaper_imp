@@ -23,7 +23,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
   return (
     <Link
       href={`/wallpapers/${slug}`}
-      className="p-2 rounded-2xl border border-transparent flex-col h-full"
+      className="rounded-2xl border border-transparent flex-col h-full"
     >
       <div className="w-full flex flex-col h-full">
         <div className="w-full aspect-square bg-mock rounded-2xl mb-4 relative overflow-hidden">
@@ -34,7 +34,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
             sizes="(max-width: 768px) 100vw, 370px"
             className="object-cover rounded-2xl"
             priority={false}
-            fallback="/placeholder.jpg"
+            fallback="/placeholder.png"
           />
         </div>
         {/* Title */}
@@ -46,7 +46,7 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
           {sku}
         </div>
         {/* Price row */}
-        <div className="flex items-end justify-between mt-auto">
+        <div className="flex items-end justify-between">
           <div className="flex flex-col">
             {oldPrice && (
               <span className="text-sm sm:text-lg text-[#42576A] font-bold line-through mb-1">
@@ -59,9 +59,8 @@ const ProductPreview: React.FC<ProductPreviewProps> = ({
           </div>
           <button
             type="button"
-            className="ml-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+            className="ml-2 p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer flex-shrink-0"
             aria-label="Додати в кошик"
-            onClick={(e) => e.preventDefault()}
           >
             <AddToCartIcon />
           </button>

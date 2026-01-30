@@ -25160,6 +25160,20 @@ export type ProductsPaginatedQuery = { __typename?: 'RootQuery', products?: { __
       | { __typename?: 'VariableProduct', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
     > } | null };
 
+export type SearchProductsQueryVariables = Exact<{
+  search: Scalars['String']['input'];
+  first?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type SearchProductsQuery = { __typename?: 'RootQuery', products?: { __typename?: 'RootQueryToProductUnionConnection', nodes: Array<
+      | { __typename?: 'ExternalProduct', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
+      | { __typename?: 'GroupProduct', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
+      | { __typename?: 'SimpleProduct', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
+      | { __typename?: 'SimpleProductVariation', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
+      | { __typename?: 'VariableProduct', regularPrice?: string | null, salePrice?: string | null, databaseId: number, name?: string | null, slug?: string | null, sku?: string | null, image?: { __typename?: 'MediaItem', sourceUrl?: string | null, altText?: string | null } | null }
+    > } | null };
+
 export type TopLevelCategoriesWithImagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -25330,6 +25344,26 @@ export const ProductsPaginatedDocument = gql`
   }
 }
     `;
+export const SearchProductsDocument = gql`
+    query SearchProducts($search: String!, $first: Int = 8) {
+  products(where: {search: $search}, first: $first) {
+    nodes {
+      databaseId
+      name
+      slug
+      sku
+      image {
+        sourceUrl
+        altText
+      }
+      ... on ProductWithPricing {
+        regularPrice(format: RAW)
+        salePrice(format: RAW)
+      }
+    }
+  }
+}
+    `;
 export const TopLevelCategoriesWithImagesDocument = gql`
     query TopLevelCategoriesWithImages {
   productCategories(where: {parent: null, orderby: TERM_ORDER}, first: 10) {
@@ -25369,6 +25403,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     ProductsPaginated(variables?: ProductsPaginatedQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<ProductsPaginatedQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<ProductsPaginatedQuery>({ document: ProductsPaginatedDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'ProductsPaginated', 'query', variables);
+    },
+    SearchProducts(variables: SearchProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<SearchProductsQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<SearchProductsQuery>({ document: SearchProductsDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'SearchProducts', 'query', variables);
     },
     TopLevelCategoriesWithImages(variables?: TopLevelCategoriesWithImagesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders, signal?: RequestInit['signal']): Promise<TopLevelCategoriesWithImagesQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<TopLevelCategoriesWithImagesQuery>({ document: TopLevelCategoriesWithImagesDocument, variables, requestHeaders: { ...requestHeaders, ...wrappedRequestHeaders }, signal }), 'TopLevelCategoriesWithImages', 'query', variables);
